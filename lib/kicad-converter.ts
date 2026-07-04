@@ -18,8 +18,8 @@ export async function convertKicadModToCircuitJson(kicadModContent: string) {
 
     const converter = new KicadFootprintToCircuitJsonConverter()
     converter.addFile(
-      KICAD_MOD_FILE_NAME,
-      normalizeLegacyKicadMod(kicadModContent),
+      "footprint.kicad_mod",
+      convertLegacyModuleRoot(kicadModContent),
     )
     converter.runUntilFinished()
 
@@ -36,6 +36,10 @@ export async function convertKicadModToCircuitJson(kicadModContent: string) {
       error: error?.message || String(error) || "Unknown conversion error",
     }
   }
+}
+
+function convertLegacyModuleRoot(kicadModContent: string) {
+  return kicadModContent.replace(/^\s*\(module\b/, "(footprint")
 }
 
 /**
